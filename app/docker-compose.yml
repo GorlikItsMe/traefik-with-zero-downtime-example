@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  flask_app:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    labels:
+      traefik.enable: true
+      # routers
+      traefik.http.routers.flask_app.rule: Host(`app.localhost`)
+      traefik.http.routers.flask_app.service: flask_app
+      traefik.http.services.flask_app.loadbalancer.server.port: 5000
+
+    networks:
+      - traefik
+
+networks:
+  traefik:
+    external: true
+    name: traefik

@@ -1,0 +1,43 @@
+global:
+  checkNewVersion: true
+  sendAnonymousUsage: true
+
+# Log information
+log:
+  level: INFO  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  format: common  # common, json, logfmt
+  filePath: /var/log/traefik/traefik.log
+
+# Accesslog
+accesslog:
+  format: common  # common, json, logfmt
+  filePath: /var/log/traefik/access.log
+
+# Enable API and Dashboard
+api:
+  dashboard: true  # true by default
+  insecure: true  # Don't do this in production! (or make sure you dont expose it)
+metrics:
+  prometheus:
+    buckets:
+      - 0.1
+      - 0.3
+      - 1.2
+      - 5
+
+
+# Entry Points configuration
+# ---
+entryPoints:
+  web:
+    address: :80
+
+
+providers:
+  docker:
+    exposedByDefault: false  # https://doc.traefik.io/traefik/providers/docker/#exposedbydefault
+    network: traefik
+  file:
+    # watch for dynamic configuration changes
+    directory: /etc/traefik
+    watch: true
